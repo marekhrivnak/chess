@@ -1,0 +1,48 @@
+<project name="Chess" default="main" basedir=".">
+	<description>
+		Create a Java Project (JAR) with Ant build script
+	</description>
+
+	<property name="projectName" value="DateUtils" />
+	
+	<!-- Java sources -->
+	<property name="src.dir" value="src" />
+	
+	<!-- Java classes -->
+	<property name="build.dir" value="build" />
+	
+	<!-- Output -->
+	<property name="dest.dir" value="dest" />
+
+	<property name="jar.dir"  value="${dest.dir}/jar"/>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dest.dir}" />
+    	</target>
+
+	<target name="compile" description="compile the source ">
+		<mkdir dir="${build.dir}"/>
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" />
+		<copy todir="${build.dir}/ija_proj">
+			<fileset dir="lib"/>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}"/>
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="ija_proj.gui.SetBoard"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+        	<java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+	</target>
+
+	<target name="clean-build" depends="clean,jar"/>
+
+	<target name="main" depends="clean,run"/>
+</project>
